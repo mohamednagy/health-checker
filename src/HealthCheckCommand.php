@@ -26,7 +26,7 @@ class HealthCheckCommand extends Command
 
     public function handle()
     {
-        $isSilent = $this->options('silent');
+        $isSilent = $this->option('silent');
         $name = $this->argument('name');
         if ($name) {
             $results = collect($this->checkRunner->run($name));
@@ -34,7 +34,7 @@ class HealthCheckCommand extends Command
             $results = $this->checkRunner->runAll();
         }
 
-        if (!$isSilent) {
+        if ($isSilent != true) {
             $this->displayResult($results);
         }
     }

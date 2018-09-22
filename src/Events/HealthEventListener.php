@@ -24,6 +24,10 @@ class HealthEventListener
             }
         }
 
+        if ($notifiedResults->count() == 0) {
+            return;
+        }
+
         foreach (config('health-checker.notifications.channels') as $channel) {
             (new $channel)->notify($notifiedResults);
         }
@@ -34,22 +38,24 @@ class HealthEventListener
         return $this->notificationsConfig['enabled'];
     }
 
-
-
-    private function shouldNotify(Result $result)
+    private function shouldNotify(Result $result): bool
     {
+        return false;
         $result = $result->toArray();
 
-        $shouldNotifiy = $this->isNotificationsEnabled();
+        $shouldNotify = $this->isNotificationsEnabled();
+        if ($shouldNotify === false) {
+            return false;
+        }
 
         $checkerName = $result['checkerName'];
         $config = config('health-checker.checkers.'.$checkerName);
-        $shouldNotifiy = $config['notify'] ?? $shouldNotifiy;
+        $shouldNotify = $config['notify'] ?? $shouldNotify;
 
         if (!in_array($result['type'], $this->notificationsConfig['notify_on'])) {
-            $shouldNotifiy = false;
+            $shouldNotify = false;
         }
 
-        return $shouldNotifiy;
+        return $shouldNotify;
     }
 }
