@@ -1,0 +1,23 @@
+{
+    "name": "nagy/health-check",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohamed Nagy",
+            "email": "mohamed.n.haleem@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nagy\\HealthChecker\\": "src",
+            "Nagy\\HealthChecker\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "PHP": ">7.1",
+        "illuminate/support": "^5.7",
+        "orchestra/testbench": "^3.7"
+    },
+    "description": ""
+}
