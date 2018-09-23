@@ -30,7 +30,7 @@ class CheckerTest extends TestCase
         $this->checkService = $this->app->make(CheckService::class);
 
         $result = $this->checkService->run('php');
-        $this->assertEquals(Result::SUCCESS_STATUS, $result->toArray()['type']);
+        $this->assertEquals(Result::SUCCESS_STATUS, $result->toArray()['status']);
 
 
         Config::set('health-check.checkers', [
@@ -41,7 +41,7 @@ class CheckerTest extends TestCase
         ]);
 
         $result = $this->checkService->run('php');
-        $this->assertEquals(Result::ERROR_STATUS, $result->toArray()['type']);
+        $this->assertEquals(Result::ERROR_STATUS, $result->toArray()['status']);
     }
 
 
@@ -60,10 +60,10 @@ class CheckerTest extends TestCase
         $this->checkService = $this->app->make(CheckService::class);
 
         $result = $this->checkService->run('expression')->toArray();
-        $this->assertEquals(Result::SUCCESS_STATUS, $result['type']);
+        $this->assertEquals(Result::SUCCESS_STATUS, $result['status']);
 
         Config::set('health-check.checkers.expression.options.expression', '1+1 == 3');
         $result = $this->checkService->run('expression')->toArray();
-        $this->assertEquals(Result::ERROR_STATUS, $result['type']);
+        $this->assertEquals(Result::ERROR_STATUS, $result['status']);
     }
 }

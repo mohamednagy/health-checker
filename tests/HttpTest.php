@@ -27,7 +27,7 @@ class HttpTest extends TestCase
 		$this->json('get', 'health-check')
 			->assertStatus(200)
 			->assertJsonStructure([
-				['type', 'message', 'checkerName']
+				['status', 'message', 'checkerName']
 			]);
 	}
 
@@ -35,6 +35,6 @@ class HttpTest extends TestCase
 	{
 		$this->json('get', 'health-check/httpd-check')
 			->assertStatus(200)
-			->assertJsonStructure(['type', 'message', 'checkerName']);
+			->assertJsonStructure(['status', 'message', 'checkerName']);
 	}
 }

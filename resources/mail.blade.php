@@ -10,7 +10,7 @@
     @foreach($resultCollection as $result)
         <tr>
             <td>$result['checkerName]</td>
-            <td>$result['type']</td>
+            <td>$result['status']</td>
             <td>$result['message]</td>
         </tr>
     @endforeach

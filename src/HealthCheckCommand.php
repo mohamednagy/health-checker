@@ -45,16 +45,16 @@ class HealthCheckCommand extends Command
         $columns = ['name', 'status', 'message'];
         $rows = $results->map( function (Result $result) {
             return collect($result->toArray())
-                ->only(['checkerName', 'type', 'message'])
+                ->only(['checkerName', 'status', 'message'])
                 ->toArray();
         });
 
         $styledRows = $rows->map( function (array $result) {
-            $type = $result['type'];
+            $status = $result['status'];
             $bg = 'green';
-            if ($type == Result::ERROR_STATUS) {
+            if ($status == Result::ERROR_STATUS) {
                 $bg = 'red';
-            } elseif ($type == Result::WARNING_STATUS) {
+            } elseif ($status == Result::WARNING_STATUS) {
                 $bg = 'yellow';
             }
             foreach ($result as &$item) {

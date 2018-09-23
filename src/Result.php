@@ -16,7 +16,7 @@ class Result
     const WARNING_STATUS = 'warning';
 
     /** @var string */
-    private $type;
+    private $status;
 
     /** @var string */
     private $message;
@@ -29,9 +29,9 @@ class Result
 
     private $executionTime;
 
-    public function __construct(string $checkerName, $type = 'success', $message = 'Everything is ok with the process', $trace = [])
+    public function __construct(string $checkerName, $status = 'success', $message = 'Everything is ok with the process', $trace = [])
     {
-        $this->type = $type;
+        $this->status = $status;
         $this->message = $message;
         $this->trace = $trace;
         $this->checkerName = $checkerName;
@@ -46,7 +46,7 @@ class Result
     {
         return [
             'checkerName' => $this->checkerName,
-            'type' => $this->type,
+            'status' => $this->status,
             'message' => $this->message,
             'trace' => $this->trace,
             'executionTime' => $this->executionTime

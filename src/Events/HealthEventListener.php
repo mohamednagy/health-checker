@@ -51,7 +51,7 @@ class HealthEventListener
         $config = config('health-check.checkers.'.$checkerName);
         $shouldNotify = $config['notify'] ?? $shouldNotify;
 
-        if (!in_array($result['type'], $this->notificationsConfig['notify_on'])) {
+        if (!in_array($result['status'], $this->notificationsConfig['notify_on'])) {
             $shouldNotify = false;
         }
 
