@@ -16,7 +16,7 @@
     },
     "require": {
         "PHP": ">7.1",
-        "illuminate/support": "^5.7",
+        "illuminate/support": "^5.5",
         "orchestra/testbench": "^3.7"
     },
     "description": ""
