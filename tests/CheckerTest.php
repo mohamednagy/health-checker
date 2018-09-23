@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Nagy\HealthChecker\Checkers\Expression;
 use Nagy\HealthChecker\Checkers\ProcessCount;
-use Nagy\HealthChecker\CheckRunner;
+use Nagy\HealthChecker\CheckService;
 use Nagy\HealthChecker\Result;
 
 class CheckerTest extends TestCase
 {
-    /** @var CheckRunner */
-    private $checkRunner;
+    /** @var CheckService */
+    private $checkService;
 
     public function setUp()
     {
@@ -27,9 +27,9 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $this->checkRunner = $this->app->make(CheckRunner::class);
+        $this->checkService = $this->app->make(CheckService::class);
 
-        $result = $this->checkRunner->run('php');
+        $result = $this->checkService->run('php');
         $this->assertEquals(Result::SUCCESS_STATUS, $result->toArray()['type']);
 
 
@@ -40,7 +40,7 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $result = $this->checkRunner->run('php');
+        $result = $this->checkService->run('php');
         $this->assertEquals(Result::ERROR_STATUS, $result->toArray()['type']);
     }
 
@@ -57,13 +57,13 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $this->checkRunner = $this->app->make(CheckRunner::class);
+        $this->checkService = $this->app->make(CheckService::class);
 
-        $result = $this->checkRunner->run('expression')->toArray();
+        $result = $this->checkService->run('expression')->toArray();
         $this->assertEquals(Result::SUCCESS_STATUS, $result['type']);
 
         Config::set('health-checker.checkers.expression.options.expression', '1+1 == 3');
-        $result = $this->checkRunner->run('expression')->toArray();
+        $result = $this->checkService->run('expression')->toArray();
         $this->assertEquals(Result::ERROR_STATUS, $result['type']);
     }
 }

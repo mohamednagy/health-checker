@@ -5,7 +5,7 @@ use Exception;
 use Illuminate\Support\Collection;
 use Nagy\HealthChecker\Events\HealthEvent;
 
-class CheckRunner
+class CheckService
 {
 	private $checks = [];
 
