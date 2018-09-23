@@ -6,6 +6,7 @@ Monitor your laravel server and application health and get notified immediately.
 * [Artisan command](#artisan-command)
 * [Schedule](#schedule)
 * [Notifications](#notifications)
+* [Implemented Checkers](#checkers)
 * [Custom Checkers](#custom-checkers)
  
 # Install
