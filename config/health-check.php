@@ -19,7 +19,7 @@ return [
     ],
 
     'checkers' => [
-        'httpd-check' => [
+            'httpd-check' => [
             'class' => '\Nagy\HealthChecker\Checkers\ProcessCount',
             'options' => ['processName' => 'httpd', 'min' => 1, 'max' => 99999]
         ],

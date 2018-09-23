@@ -37,6 +37,9 @@ class HealthCheckController extends Controller
     public function runAll(Request $request)
     {
         $results = $this->checkService->runAll();
+        $results = $results->map(function ($result) {
+            return $result->toArray();
+        });
 
         return $results;
 
