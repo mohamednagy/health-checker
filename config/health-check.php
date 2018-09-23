@@ -19,9 +19,24 @@ return [
     ],
 
     'checkers' => [
-            'httpd-check' => [
+        'httpd-check' => [
             'class' => '\Nagy\HealthChecker\Checkers\ProcessCount',
             'options' => ['processName' => 'httpd', 'min' => 1, 'max' => 99999]
+        ],
+
+        'supervisord' => [
+            'class' => '\Nagy\HealthChecker\Checkers\ProcessCount',
+            'options' => ['processName' => 'supervisord', 'min' => 1]
+        ],
+
+        'mysql-server' => [
+            'class' => '\Nagy\HealthChecker\Checkers\ServerAvailability',
+            'options' => ['host' => env('DB_HOST'), 'port' => env('DB_PORT')]
+        ],
+
+        'redis-server' => [
+            'class' => '\Nagy\HealthChecker\Checkers\ServerAvailability',
+            'options' => ['host' => env('REDIS_HOST'), 'port' => env('REDIS_PORT')]
         ],
 
         'app-debug' => [

@@ -17,9 +17,12 @@ class HttpTest extends TestCase
 
 	public function testItCanCallGetCheckers()
 	{
-		$this->json('get', 'health-check/checkers')
-			->assertStatus(200)
-			->assertJson(['httpd-check', 'app-debug']);
+		$response = $this->json('get', 'health-check/checkers')
+			->assertStatus(200);
+
+		$checkers = array_keys(config('health-check.checkers'));
+
+		$this->assertEquals($checkers, $response->json());
 	}
 
 	public function testItCanCallGetAllCheckersResult()

@@ -1,10 +1,10 @@
 <?php
 namespace Nagy\HealthChecker\Tests;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Nagy\HealthChecker\Checkers\Expression;
 use Nagy\HealthChecker\Checkers\ProcessCount;
+use Nagy\HealthChecker\Checkers\ServerAvailability;
 use Nagy\HealthChecker\CheckService;
 use Nagy\HealthChecker\Result;
 
@@ -47,7 +47,6 @@ class CheckerTest extends TestCase
 
     public function testExpressionChecker()
     {
-
         Config::set('health-check.checkers', [
             'expression' => [
                 "class" => Expression::class,
@@ -64,6 +63,27 @@ class CheckerTest extends TestCase
 
         Config::set('health-check.checkers.expression.options.expression', '1+1 == 3');
         $result = $this->checkService->run('expression')->toArray();
+        $this->assertEquals(Result::ERROR_STATUS, $result['status']);
+    }
+
+    public function testServerAvailabilityChecker()
+    {
+        Config::set('health-check.checkers', [
+            'google' => [
+                "class" => ServerAvailability::class,
+                'options' => [
+                    'host' => 'google.com'
+                ]
+            ]
+        ]);
+
+        $this->checkService = $this->app->make(CheckService::class);
+
+        $result = $this->checkService->run('google')->toArray();
+        $this->assertEquals(Result::SUCCESS_STATUS, $result['status']);
+
+        Config::set('health-check.checkers.google.options.host', 'notExistingHost');
+        $result = $this->checkService->run('google')->toArray();
         $this->assertEquals(Result::ERROR_STATUS, $result['status']);
     }
 }
