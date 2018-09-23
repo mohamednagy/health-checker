@@ -4,7 +4,7 @@ use Nagy\HealthChecker\Result;
 
 return [
     'notifications' => [
-        'enabled' => false,
+        'enabled' => true,
 
         'schedule' => 'hourly',
 
