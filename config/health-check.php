@@ -6,8 +6,6 @@ return [
     'notifications' => [
         'enabled' => true,
 
-        'schedule' => 'hourly',
-
         'notify_on' => [Result::ERROR_STATUS,Result::SUCCESS_STATUS, Result::WARNING_STATUS],
         
         'mail_from' => env('MAIL_USERNAME'),
@@ -17,6 +15,8 @@ return [
             Nagy\HealthChecker\Notifications\Mail\MailChannel::class,
         ]
     ],
+
+    'schedule' => 'hourly',
 
     'checkers' => [
         'httpd-check' => [
