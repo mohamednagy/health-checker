@@ -40,7 +40,6 @@ class HealthEventListener
 
     private function shouldNotify(Result $result): bool
     {
-        return false;
         $result = $result->toArray();
 
         $shouldNotify = $this->isNotificationsEnabled();
