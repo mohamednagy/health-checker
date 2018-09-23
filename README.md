@@ -1,11 +1,13 @@
-# heath-checker
+# health-checker
 Monitor your laravel server and application health and get notified immediately.
 
 ## Features
 * [Dashboard](#dashboard)
+* [APIs](#APIs)
 * [Artisan command](#artisan-command)
 * [Schedule](#schedule)
 * [Notifications](#notifications)
+* [Implemented Checkers](#checkers)
 * [Custom Checkers](#custom-checkers)
  
 # Install
@@ -19,7 +21,40 @@ $ php artisan vendor:publish --provider='Nagy\HealthChecker\ServiceProvider'
 
 
 ## Dashboard
+http://localhost/health-check/dashboard
 <img width="1412" alt="screen shot 2018-09-22 at 15 52 53" src="https://user-images.githubusercontent.com/10484012/45917999-50790580-be80-11e8-9404-12d16d69db3b.png">
+
+## APIs
+get all checkers: `http://localhost/health-check/checkers`
+response:
+```
+[
+ 'httpd-check',
+ 'app-debug'
+]
+```
+
+get all check results `http://localhost/health-check`
+response:
+```
+[
+    [
+      'checkerName' => 'httpd-check',
+      'type' => 'success',
+      'message' => 'Everything is ok with the process'
+    ],
+    ...
+]
+```
+get specific checker result `http://localhost/health-check/checker-name`
+response:
+```
+[
+  'checkerName' => 'httpd-check',
+  'type' => 'success',
+  'message' => 'Everything is ok with the process'
+]
+```
 
 ## Artisan Command
 <img width="721" alt="screen shot 2018-09-22 at 15 55 16" src="https://user-images.githubusercontent.com/10484012/45917998-4fe06f00-be80-11e8-8d5b-ac54857a9586.png">
