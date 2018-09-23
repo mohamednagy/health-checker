@@ -2,26 +2,68 @@
 namespace Nagy\HealthChecker\Tests;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
+use Nagy\HealthChecker\Checkers\Expression;
+use Nagy\HealthChecker\Checkers\ProcessCount;
 use Nagy\HealthChecker\CheckRunner;
+use Nagy\HealthChecker\Result;
 
 class CheckerTest extends TestCase
 {
+    /** @var CheckRunner */
+    private $checkRunner;
 
-    public function testItCanRunCheckers()
+    public function setUp()
     {
-//        $checker = new CheckRunner(config('health-checker'));
-//
-//        $results = $checker->run('docker-compose Check');
-//
-//        dd($results);
+        parent::setUp();
+    }
 
-//        Artisan::call('health:check');
-//        dd(Artisan::output());
+    public function testProcessCountChecker()
+    {
+        Config::set('health-checker.checkers', [
+            'php' => [
+                "class" => ProcessCount::class,
+                "options" => ['processName' => 'php', 'min' => 1]
+            ]
+        ]);
 
-//        $response = $this->json('get', 'health-check');
-//        dd($response->json());
+        $this->checkRunner = $this->app->make(CheckRunner::class);
 
-        $response = $this->json('get', 'health-check/dashboard');
-        dd($response->getContent());
+        $result = $this->checkRunner->run('php');
+        $this->assertEquals(Result::SUCCESS_STATUS, $result->toArray()['type']);
+
+
+        Config::set('health-checker.checkers', [
+            'php' => [
+                "class" => ProcessCount::class,
+                "options" => ['processName' => 'notExistingProcess', 'min' => 1]
+            ]
+        ]);
+
+        $result = $this->checkRunner->run('php');
+        $this->assertEquals(Result::ERROR_STATUS, $result->toArray()['type']);
+    }
+
+
+    public function testExpressionChecker()
+    {
+
+        Config::set('health-checker.checkers', [
+            'expression' => [
+                "class" => Expression::class,
+                'options' => [
+                    'expression' => '1+1 == 2'
+                ]
+            ]
+        ]);
+
+        $this->checkRunner = $this->app->make(CheckRunner::class);
+
+        $result = $this->checkRunner->run('expression')->toArray();
+        $this->assertEquals(Result::SUCCESS_STATUS, $result['type']);
+
+        Config::set('health-checker.checkers.expression.options.expression', '1+1 == 3');
+        $result = $this->checkRunner->run('expression')->toArray();
+        $this->assertEquals(Result::ERROR_STATUS, $result['type']);
     }
 }

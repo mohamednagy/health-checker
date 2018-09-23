@@ -4,7 +4,7 @@ use Nagy\HealthChecker\Result;
 
 return [
     'notifications' => [
-        'enabled' => true,
+        'enabled' => false,
         'notify_on' => [Result::ERROR_STATUS,Result::SUCCESS_STATUS, Result::WARNING_STATUS],
         
         'mail_from' => env('MAIL_USERNAME'),
@@ -21,15 +21,10 @@ return [
             'options' => ['processName' => 'httpd', 'min' => 1, 'max' => 99999]
         ],
 
-        'artisan' => [
-            'class' => '\Nagy\HealthChecker\Checkers\ProcessCount',
-            'options' => ['processName' => 'artisan', 'min' => 1, 'max' => 99999]
-        ],
-
-        'expression-test' => [
+        'app-debug' => [
             'class' => '\Nagy\HealthChecker\Checkers\Expression',
             'options' => [
-                'expression' => '1+1 == 2'
+                'expression' => 'env("APP_DEBUG") == false'
             ]
         ],
     ]

@@ -49,7 +49,10 @@ class CheckRunner
 			return $result;
 
 		} catch (Exception $exception) {
-			return new Result('General Error', Result::ERROR_STATUS, $exception->getMessage(), []);
+			return new Result('General Error', Result::ERROR_STATUS, $exception->getMessage(), [
+			    'line' => $exception->getLine(),
+                'file' => $exception->getFile()
+            ]);
 		}
 	}
 
