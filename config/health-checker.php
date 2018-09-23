@@ -5,6 +5,9 @@ use Nagy\HealthChecker\Result;
 return [
     'notifications' => [
         'enabled' => false,
+
+        'schedule' => 'hourly',
+
         'notify_on' => [Result::ERROR_STATUS,Result::SUCCESS_STATUS, Result::WARNING_STATUS],
         
         'mail_from' => env('MAIL_USERNAME'),

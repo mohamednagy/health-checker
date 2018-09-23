@@ -19,8 +19,9 @@ class ServiceProvider extends LaravelServiceProvider
             __DIR__.'/../resources/js' => public_path('js'),
         ], 'public');
 
+        $frequency = config('health-checker.schedule') ?? 'hourly';
         $this->app->make(Schedule::class)
-            ->command(HealthCheckCommand::class)->everyFiveMinutes();
+            ->command(HealthCheckCommand::class)->{$frequency}();
     }
 
     public function register()
