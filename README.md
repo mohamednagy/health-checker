@@ -8,6 +8,9 @@ Monitor your laravel server and application health and get notified immediately.
 * [Schedule](#schedule)
 * [Notifications](#notifications)
 * [Implemented Checkers](#checkers)
+   * ProcessCount
+   * Expression
+   * ServerAvailability
 * [Custom Checkers](#custom-checkers)
  
 # Install
@@ -94,7 +97,21 @@ The package consider the checker key as the checker name, so it's highly recomme
 
 ### Expression
 Expression checker evalutes a Specfic expression, the evalution should be `true` to consider the it as healthy.
+```
+'app-debug' => [
+     'class' => Expression::class,
+     'options' => ['expression' => 'env("APP_DEBUG") == true']
+]
+```
 
+### ServerAvailability
+Check if the provided `host` is accessable via a specific port *(port is optional, default is 80)*
+```
+'mysql' => [
+    'class' => ServerAvailability::class,
+    'options' => ['host' => env('DB_HOST'), 'port' => env('DB_PORT')]
+]
+```
 
 ## Custom Checkers
 in case you need to build your own checkers then all you need to do is creating a class that extends from `AbstractBaseChecker` and implements `HealthCheckInterface`.
