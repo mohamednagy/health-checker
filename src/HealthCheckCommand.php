@@ -5,6 +5,7 @@ namespace Nagy\HealthChecker;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 
 class HealthCheckCommand extends Command
 {
@@ -29,7 +30,7 @@ class HealthCheckCommand extends Command
         $isSilent = $this->option('silent');
         $name = $this->argument('name');
         if ($name) {
-            $results = collect($this->checkRunner->run($name));
+            $results = collect([$this->checkRunner->run($name)]);
         } else{
             $results = $this->checkRunner->runAll();
         }
@@ -41,7 +42,7 @@ class HealthCheckCommand extends Command
 
     private function displayResult(Collection $results)
     {
-        $columns = ['name', 'type', 'message'];
+        $columns = ['name', 'status', 'message'];
         $rows = $results->map( function (Result $result) {
             return collect($result->toArray())
                 ->only(['checkerName', 'type', 'message'])
@@ -57,13 +58,23 @@ class HealthCheckCommand extends Command
                 $bg = 'yellow';
             }
             foreach ($result as &$item) {
-                $item = '<bg='.$bg.';>'. $item.'</>';
+                $item = '<fg='.$bg.';>'. $item.'</>';
             }
 
             return $result;
         });
 
-        $this->table($columns, $styledRows);
+        $table = new Table($this->output);
+        $table->setHeaders($columns);
+        foreach ($styledRows as $key => $row) {
+            $table->addRow($row);
+
+            if ($key < count($styledRows) -1) {
+                $table->addRow(new TableSeparator());
+            }
+        }
+
+        $table->render();
     }
 
 }
