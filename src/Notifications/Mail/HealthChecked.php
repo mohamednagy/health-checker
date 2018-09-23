@@ -15,7 +15,7 @@ class HealthChecked extends Mailable
 
     public function build()
     {
-        return $this->from(config('health-checker.notifications.mail_from'))
+        return $this->from(config('health-check.notifications.mail_from'))
             ->view('health-check::mail', $this->resultCollections);
     }
 }

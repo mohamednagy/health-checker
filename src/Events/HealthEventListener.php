@@ -12,7 +12,7 @@ class HealthEventListener
 
     public function __construct()
     {
-        $this->notificationsConfig = config('health-checker.notifications');
+        $this->notificationsConfig = config('health-check.notifications');
     }
 
     public function handle(HealthEvent $event)
@@ -28,7 +28,7 @@ class HealthEventListener
             return;
         }
 
-        foreach (config('health-checker.notifications.channels') as $channel) {
+        foreach (config('health-check.notifications.channels') as $channel) {
             (new $channel)->notify($notifiedResults);
         }
     }
@@ -48,7 +48,7 @@ class HealthEventListener
         }
 
         $checkerName = $result['checkerName'];
-        $config = config('health-checker.checkers.'.$checkerName);
+        $config = config('health-check.checkers.'.$checkerName);
         $shouldNotify = $config['notify'] ?? $shouldNotify;
 
         if (!in_array($result['type'], $this->notificationsConfig['notify_on'])) {

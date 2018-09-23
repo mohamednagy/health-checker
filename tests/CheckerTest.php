@@ -20,7 +20,7 @@ class CheckerTest extends TestCase
 
     public function testProcessCountChecker()
     {
-        Config::set('health-checker.checkers', [
+        Config::set('health-check.checkers', [
             'php' => [
                 "class" => ProcessCount::class,
                 "options" => ['processName' => 'php', 'min' => 1]
@@ -33,7 +33,7 @@ class CheckerTest extends TestCase
         $this->assertEquals(Result::SUCCESS_STATUS, $result->toArray()['type']);
 
 
-        Config::set('health-checker.checkers', [
+        Config::set('health-check.checkers', [
             'php' => [
                 "class" => ProcessCount::class,
                 "options" => ['processName' => 'notExistingProcess', 'min' => 1]
@@ -48,7 +48,7 @@ class CheckerTest extends TestCase
     public function testExpressionChecker()
     {
 
-        Config::set('health-checker.checkers', [
+        Config::set('health-check.checkers', [
             'expression' => [
                 "class" => Expression::class,
                 'options' => [
@@ -62,7 +62,7 @@ class CheckerTest extends TestCase
         $result = $this->checkService->run('expression')->toArray();
         $this->assertEquals(Result::SUCCESS_STATUS, $result['type']);
 
-        Config::set('health-checker.checkers.expression.options.expression', '1+1 == 3');
+        Config::set('health-check.checkers.expression.options.expression', '1+1 == 3');
         $result = $this->checkService->run('expression')->toArray();
         $this->assertEquals(Result::ERROR_STATUS, $result['type']);
     }

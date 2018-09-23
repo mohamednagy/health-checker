@@ -12,23 +12,23 @@ class ServiceProvider extends LaravelServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/health-checker.php' => config_path('health-checker.php')
+            __DIR__.'/../config/health-check.php' => config_path('health-check.php')
         ]);
 
         $this->publishes([
             __DIR__.'/../resources/js' => public_path('js'),
         ], 'public');
 
-        $frequency = config('health-checker.schedule') ?? 'hourly';
+        $frequency = config('health-check.schedule') ?? 'hourly';
         $this->app->make(Schedule::class)
             ->command(HealthCheckCommand::class)->{$frequency}();
     }
 
     public function register()
     {
-        $this->mergeConfigFrom( __DIR__.'/../config/health-checker.php', 'health-checker');
+        $this->mergeConfigFrom( __DIR__.'/../config/health-check.php', 'health-check');
         $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'health-checker');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'health-check');
 
         $this->registerEventListeners();
 

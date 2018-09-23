@@ -8,7 +8,7 @@ class MailChannel
 {
     public function notify(Collection $results)
     {
-        Mail::to(config('health-checker.notifications.mail_to'))
+        Mail::to(config('health-check.notifications.mail_to'))
             ->send(new HealthChecked($results));
     }
 }

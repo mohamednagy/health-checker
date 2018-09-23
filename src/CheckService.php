@@ -63,6 +63,6 @@ class CheckService
 
     public function getCheckers(): array
     {
-        return config('health-checker')['checkers'] ?? [];
+        return config('health-check')['checkers'] ?? [];
     }
 }

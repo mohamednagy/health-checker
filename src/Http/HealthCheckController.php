@@ -19,7 +19,7 @@ class HealthCheckController extends Controller
 
     public function index()
     {
-        return view('health-checker::dashboard');
+        return view('health-check::dashboard');
     }
 
     public function getCheckers()
