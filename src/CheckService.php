@@ -38,7 +38,7 @@ class CheckService
             $options = $checker['options'];
             $options['checkerName'] = $name;
 
-            $checker = new $checker['class']($options);
+            $checker = app()->make($checker['class'], ['options' => $options]);
 
             $time = microtime(true);
             $result = $checker->check();

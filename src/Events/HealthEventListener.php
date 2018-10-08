@@ -29,7 +29,7 @@ class HealthEventListener
         }
 
         foreach (config('health-check.notifications.channels') as $channel) {
-            (new $channel)->notify($notifiedResults);
+            app()->make($channel)->notify($notifiedResults);
         }
     }
 
