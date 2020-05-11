@@ -15,10 +15,6 @@ class ServiceProvider extends LaravelServiceProvider
             __DIR__.'/../config/health-check.php' => config_path('health-check.php')
         ]);
 
-        $this->publishes([
-            __DIR__.'/../resources/js' => public_path('js'),
-        ], 'public');
-
         $frequency = config('health-check.schedule') ?? 'hourly';
         $this->app->make(Schedule::class)
             ->command(HealthCheckCommand::class)->{$frequency}();
@@ -27,8 +23,6 @@ class ServiceProvider extends LaravelServiceProvider
     public function register()
     {
         $this->mergeConfigFrom( __DIR__.'/../config/health-check.php', 'health-check');
-        $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'health-check');
 
         $this->registerEventListeners();
 
@@ -45,8 +39,5 @@ class ServiceProvider extends LaravelServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([HealthCheckCommand::class]);
         }
-
-//        $scheduler = $this->app->make(Schedule::class, []);
-//        $scheduler->command('health:check')->everyFiveMinutes();
     }
 }

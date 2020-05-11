@@ -15,14 +15,14 @@ class HealthCheckCommand extends Command
     /** @var string  */
     protected $description = 'Run the health check and get the result printed on the console';
 
-    /** @var CheckService  */
-    private $checkService;
+    /** @var HealthCheckRunner  */
+    private $healthCheckRunner;
 
-    public function __construct(CheckService $checkService)
+    public function __construct(HealthCheckRunner $healthCheckRunner)
     {
         parent::__construct();
 
-        $this->checkService = $checkService;
+        $this->healthCheckRunner = $healthCheckRunner;
     }
 
     public function handle()
@@ -30,10 +30,12 @@ class HealthCheckCommand extends Command
         $isSilent = $this->option('silent');
         $name = $this->argument('name');
         if ($name) {
-            $results = collect([$this->checkService->run($name)]);
-        } else{
-            $results = $this->checkService->runAll();
+            $results = $this->healthCheckRunner->run(new HealthChecker($name, config('health-check.checkers.' . $name)));
+        } else {
+            $results = $this->healthCheckRunner->runAll();
         }
+
+        $results = $results instanceof Collection ? $results : collect($results);
 
         if ($isSilent != true) {
             $this->displayResult($results);

@@ -6,6 +6,8 @@ use Nagy\HealthChecker\Checkers\Expression;
 use Nagy\HealthChecker\Checkers\ProcessCount;
 use Nagy\HealthChecker\Checkers\ServerAvailability;
 use Nagy\HealthChecker\CheckService;
+use Nagy\HealthChecker\HealthChecker;
+use Nagy\HealthChecker\HealthCheckRunner;
 use Nagy\HealthChecker\Result;
 
 class CheckerTest extends TestCase
@@ -13,7 +15,7 @@ class CheckerTest extends TestCase
     /** @var CheckService */
     private $checkService;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -27,9 +29,9 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $this->checkService = $this->app->make(CheckService::class);
+        $this->checkService = $this->app->make(HealthCheckRunner::class);
 
-        $result = $this->checkService->run('php');
+        $result = $this->checkService->run(new HealthChecker('php', config('health-check.checkers.php')));
         $this->assertEquals(Result::SUCCESS_STATUS, $result->toArray()['status']);
 
 
@@ -40,7 +42,7 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $result = $this->checkService->run('php');
+        $result = $this->checkService->run(new HealthChecker('php', config('health-check.checkers.php')));
         $this->assertEquals(Result::ERROR_STATUS, $result->toArray()['status']);
     }
 
@@ -56,13 +58,13 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $this->checkService = $this->app->make(CheckService::class);
+        $this->checkService = $this->app->make(HealthCheckRunner::class);
 
-        $result = $this->checkService->run('expression')->toArray();
+        $result = $this->checkService->run(new HealthChecker('expression', config('health-check.checkers.expression')))->toArray();
         $this->assertEquals(Result::SUCCESS_STATUS, $result['status']);
 
         Config::set('health-check.checkers.expression.options.expression', '1+1 == 3');
-        $result = $this->checkService->run('expression')->toArray();
+        $result = $this->checkService->run(new HealthChecker('expression', config('health-check.checkers.expression')))->toArray();
         $this->assertEquals(Result::ERROR_STATUS, $result['status']);
     }
 
@@ -77,13 +79,13 @@ class CheckerTest extends TestCase
             ]
         ]);
 
-        $this->checkService = $this->app->make(CheckService::class);
+        $this->checkService = $this->app->make(HealthCheckRunner::class);
 
-        $result = $this->checkService->run('google')->toArray();
+        $result = $this->checkService->run(new HealthChecker('google', config('health-check.checkers.google')))->toArray();
         $this->assertEquals(Result::SUCCESS_STATUS, $result['status']);
 
         Config::set('health-check.checkers.google.options.host', 'notExistingHost');
-        $result = $this->checkService->run('google')->toArray();
+        $result = $this->checkService->run(new HealthChecker('google', config('health-check.checkers.google')))->toArray();
         $this->assertEquals(Result::ERROR_STATUS, $result['status']);
     }
 }

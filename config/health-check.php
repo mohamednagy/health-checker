@@ -12,7 +12,7 @@ return [
         'mail_to' => ['first@example.com', 'second@example.com'],
 
         'channels' => [
-            Nagy\HealthChecker\Notifications\Mail\MailChannel::class,
+//            Nagy\HealthChecker\Notifications\Mail\MailChannel::class,
         ]
     ],
 

@@ -2,8 +2,6 @@
 
 namespace Nagy\HealthChecker;
 
-use Nagy\HealthChecker\Events\HealthEvent;
-
 class Result
 {
     /** @var string  */
